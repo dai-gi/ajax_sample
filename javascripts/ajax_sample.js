@@ -1,23 +1,27 @@
-$(function() {
-  const button = $("#btn");
-  const videoArea = $("#video");
-  const titleArea = $("#title");
-  const contentArea = $("#content");
-  let number = 0;
+let number = 0;
+let data = [];
+const videoArea = document.getElementById("video");
+const titleArea = document.getElementById("title");
+const contentArea = document.getElementById("content");
+const button = document.getElementById('btn');
 
-  function getData() {
-    button.click(function(){
-      $.ajax('ajax.json',{
-        type: 'GET',
-        success: function(data) {
-          titleArea.html(data[number].title);
-          contentArea.html(data[number].content);
-          videoArea.attr('src', data[number].url);
-          number == 2 ? number = 0 : number++;
-        },
-      })
-    });
-  };
+function getData() {
+  button.addEventListener('click', e => {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+      if (request.readyState == 4) {
+        if(request.status == 200) {
+          let str = JSON.stringify(request.response);
+          console.log(str[0].title);
+        }
+      }
+    }
+    request.open("GET", "ajax.json");
+    request.responseType = "json";
+    request.send(null);
+  })
+}
 
-  getData();
-})
+
+
+window.onload = getData;
