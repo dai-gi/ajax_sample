@@ -6,30 +6,24 @@ const contentArea = document.getElementById("content");
 const button = document.getElementById('btn');
 
 function getData() {
-  // コンストラクタ作成
   const request = new XMLHttpRequest();
-  request.onreadystatechange = function() {
-    // 下記の条件分岐は、【 if(xhr.readyState == 4 && xhr.status == 200){} 】と同義
-    if(request.readyState == 4) {
-      if(request.status == 200) {
-        const jsonObj = JSON.parse(JSON.stringify(request.response));
-        data.push(jsonObj[0]);
-        debugger
+  request.onreadystatechange = () => {
+    if (request.readyState == 4) {
+      if (request.status == 200) {
+        request.response.forEach((obj) => {
+          data.push(obj);
+        })
+        console.log(data); // 出力結果：(3) [{…}, {…}, {…}]
+        console.log(data[0]); // 出力結果：インデックス[0]のオブジェクトが表示される
       }
     }
   }
-  // リクエスト
   request.open("GET", "ajax.json");
   request.responseType = "json";
-  // リスエスト送信
   request.send(null);
-
 }
-console.log(data[0].title);
-debugger
 
-button.addEventListener('click', e => {
-})
-
+console.log(data); // 出力結果：[]
+console.log(data[0]); // undefined
 
 window.onload = getData;
