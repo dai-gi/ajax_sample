@@ -10,20 +10,27 @@ function getData() {
   request.onreadystatechange = () => {
     if (request.readyState == 4) {
       if (request.status == 200) {
-        request.response.forEach((obj) => {
-          data.push(obj);
+        d = JSON.parse(request.response);
+        d.forEach(element => {
+          data.push(element);
         })
-        console.log(data); // 出力結果：(3) [{…}, {…}, {…}]
-        console.log(data[0]); // 出力結果：インデックス[0]のオブジェクトが表示される
       }
     }
   }
-  request.open("GET", "ajax.json");
-  request.responseType = "json";
+  request.open("GET", "ajax.json", false);
   request.send(null);
 }
 
-console.log(data); // 出力結果：[]
-console.log(data[0]); // undefined
+function changeVideo() {
+  button.addEventListener('click', e => {
+    if(data.length == 0) {
+      getData();
+    }
+    titleArea.innerHTML = data[number].title;
+    contentArea.innerHTML = data[number].content;
+    videoArea.setAttribute("src", data[number].url);
+    number == 2 ? number = 0 : number++;
+  })
+}
 
-window.onload = getData;
+window.onload = changeVideo;
